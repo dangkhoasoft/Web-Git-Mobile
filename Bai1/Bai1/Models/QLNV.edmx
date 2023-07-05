@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLNVModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tb_ChucVu">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="int" Nullable="false" />
+          <Property Name="TenCV" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tb_CV_NV">
+          <Key>
+            <PropertyRef Name="MaNV" />
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaNV" Type="int" Nullable="false" />
+          <Property Name="MaCV" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tb_HopDong">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaNV" Type="int" Nullable="false" />
+          <Property Name="LoaiHD" Type="varchar" MaxLength="50" />
+          <Property Name="TuNgay" Type="datetime" />
+          <Property Name="DenNgay" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tb_NhanVien">
+          <Key>
+            <PropertyRef Name="MaNV" />
+          </Key>
+          <Property Name="MaNV" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HoTen" Type="varchar" MaxLength="100" />
+          <Property Name="CCCD" Type="varchar" MaxLength="50" />
+          <Property Name="QueQuan" Type="varchar" MaxLength="500" />
+          <Property Name="NgaySinh" Type="datetime" />
+          <Property Name="SDT" Type="varchar" MaxLength="20" />
+          <Property Name="MaPB" Type="int" />
+          <Property Name="Trinhdo" Type="int" />
+        </EntityType>
+        <EntityType Name="tb_PhongBan">
+          <Key>
+            <PropertyRef Name="MaPB" />
+          </Key>
+          <Property Name="MaPB" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TenPB" Type="varchar" MaxLength="50" />
+          <Property Name="SDTPB" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK_tb_CV_NV_tb_ChucVu">
+          <End Role="tb_ChucVu" Type="Self.tb_ChucVu" Multiplicity="1" />
+          <End Role="tb_CV_NV" Type="Self.tb_CV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_ChucVu">
+              <PropertyRef Name="MaCV" />
+            </Principal>
+            <Dependent Role="tb_CV_NV">
+              <PropertyRef Name="MaCV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_CV_NV_tb_NhanVien">
+          <End Role="tb_NhanVien" Type="Self.tb_NhanVien" Multiplicity="1" />
+          <End Role="tb_CV_NV" Type="Self.tb_CV_NV" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="tb_CV_NV">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_HopDong_tb_NhanVien">
+          <End Role="tb_NhanVien" Type="Self.tb_NhanVien" Multiplicity="1" />
+          <End Role="tb_HopDong" Type="Self.tb_HopDong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="tb_HopDong">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_NhanVien_tb_PhongBan">
+          <End Role="tb_PhongBan" Type="Self.tb_PhongBan" Multiplicity="0..1" />
+          <End Role="tb_NhanVien" Type="Self.tb_NhanVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_PhongBan">
+              <PropertyRef Name="MaPB" />
+            </Principal>
+            <Dependent Role="tb_NhanVien">
+              <PropertyRef Name="MaPB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLNVModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_ChucVu" EntityType="Self.tb_ChucVu" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_CV_NV" EntityType="Self.tb_CV_NV" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_HopDong" EntityType="Self.tb_HopDong" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_NhanVien" EntityType="Self.tb_NhanVien" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_PhongBan" EntityType="Self.tb_PhongBan" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tb_CV_NV_tb_ChucVu" Association="Self.FK_tb_CV_NV_tb_ChucVu">
+            <End Role="tb_ChucVu" EntitySet="tb_ChucVu" />
+            <End Role="tb_CV_NV" EntitySet="tb_CV_NV" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_CV_NV_tb_NhanVien" Association="Self.FK_tb_CV_NV_tb_NhanVien">
+            <End Role="tb_NhanVien" EntitySet="tb_NhanVien" />
+            <End Role="tb_CV_NV" EntitySet="tb_CV_NV" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_HopDong_tb_NhanVien" Association="Self.FK_tb_HopDong_tb_NhanVien">
+            <End Role="tb_NhanVien" EntitySet="tb_NhanVien" />
+            <End Role="tb_HopDong" EntitySet="tb_HopDong" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_NhanVien_tb_PhongBan" Association="Self.FK_tb_NhanVien_tb_PhongBan">
+            <End Role="tb_PhongBan" EntitySet="tb_PhongBan" />
+            <End Role="tb_NhanVien" EntitySet="tb_NhanVien" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLNVModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="tb_ChucVu">
+          <Key>
+            <PropertyRef Name="MaCV" />
+          </Key>
+          <Property Name="MaCV" Type="Int32" Nullable="false" />
+          <Property Name="TenCV" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tb_NhanVien" Relationship="Self.tb_CV_NV" FromRole="tb_ChucVu" ToRole="tb_NhanVien" />
+        </EntityType>
+        <EntityType Name="tb_HopDong">
+          <Key>
+            <PropertyRef Name="MaHD" />
+          </Key>
+          <Property Name="MaHD" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaNV" Type="Int32" Nullable="false" />
+          <Property Name="LoaiHD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TuNgay" Type="DateTime" Precision="3" />
+          <Property Name="DenNgay" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tb_NhanVien" Relationship="Self.FK_tb_HopDong_tb_NhanVien" FromRole="tb_HopDong" ToRole="tb_NhanVien" />
+        </EntityType>
+        <EntityType Name="tb_NhanVien">
+          <Key>
+            <PropertyRef Name="MaNV" />
+          </Key>
+          <Property Name="MaNV" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="HoTen" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CCCD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="QueQuan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="NgaySinh" Type="DateTime" Precision="3" />
+          <Property Name="SDT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MaPB" Type="Int32" />
+          <Property Name="Trinhdo" Type="Int32" />
+          <NavigationProperty Name="tb_HopDong" Relationship="Self.FK_tb_HopDong_tb_NhanVien" FromRole="tb_NhanVien" ToRole="tb_HopDong" />
+          <NavigationProperty Name="tb_PhongBan" Relationship="Self.FK_tb_NhanVien_tb_PhongBan" FromRole="tb_NhanVien" ToRole="tb_PhongBan" />
+          <NavigationProperty Name="tb_ChucVu" Relationship="Self.tb_CV_NV" FromRole="tb_NhanVien" ToRole="tb_ChucVu" />
+        </EntityType>
+        <EntityType Name="tb_PhongBan">
+          <Key>
+            <PropertyRef Name="MaPB" />
+          </Key>
+          <Property Name="MaPB" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TenPB" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SDTPB" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tb_NhanVien" Relationship="Self.FK_tb_NhanVien_tb_PhongBan" FromRole="tb_PhongBan" ToRole="tb_NhanVien" />
+        </EntityType>
+        <Association Name="FK_tb_HopDong_tb_NhanVien">
+          <End Role="tb_NhanVien" Type="Self.tb_NhanVien" Multiplicity="1" />
+          <End Role="tb_HopDong" Type="Self.tb_HopDong" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_NhanVien">
+              <PropertyRef Name="MaNV" />
+            </Principal>
+            <Dependent Role="tb_HopDong">
+              <PropertyRef Name="MaNV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tb_NhanVien_tb_PhongBan">
+          <End Role="tb_PhongBan" Type="Self.tb_PhongBan" Multiplicity="0..1" />
+          <End Role="tb_NhanVien" Type="Self.tb_NhanVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_PhongBan">
+              <PropertyRef Name="MaPB" />
+            </Principal>
+            <Dependent Role="tb_NhanVien">
+              <PropertyRef Name="MaPB" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tb_CV_NV">
+          <End Role="tb_ChucVu" Type="Self.tb_ChucVu" Multiplicity="*" />
+          <End Role="tb_NhanVien" Type="Self.tb_NhanVien" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="QLNVEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="tb_ChucVu" EntityType="Self.tb_ChucVu" />
+          <EntitySet Name="tb_HopDong" EntityType="Self.tb_HopDong" />
+          <EntitySet Name="tb_NhanVien" EntityType="Self.tb_NhanVien" />
+          <EntitySet Name="tb_PhongBan" EntityType="Self.tb_PhongBan" />
+          <AssociationSet Name="FK_tb_HopDong_tb_NhanVien" Association="Self.FK_tb_HopDong_tb_NhanVien">
+            <End Role="tb_NhanVien" EntitySet="tb_NhanVien" />
+            <End Role="tb_HopDong" EntitySet="tb_HopDong" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tb_NhanVien_tb_PhongBan" Association="Self.FK_tb_NhanVien_tb_PhongBan">
+            <End Role="tb_PhongBan" EntitySet="tb_PhongBan" />
+            <End Role="tb_NhanVien" EntitySet="tb_NhanVien" />
+          </AssociationSet>
+          <AssociationSet Name="tb_CV_NV" Association="Self.tb_CV_NV">
+            <End Role="tb_ChucVu" EntitySet="tb_ChucVu" />
+            <End Role="tb_NhanVien" EntitySet="tb_NhanVien" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLNVModelStoreContainer" CdmEntityContainer="QLNVEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QLNVModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_ChucVu">
+            <EntityTypeMapping TypeName="QLNVModel.tb_ChucVu">
+              <MappingFragment StoreEntitySet="tb_ChucVu">
+                <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+                <ScalarProperty Name="TenCV" ColumnName="TenCV" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_HopDong">
+            <EntityTypeMapping TypeName="QLNVModel.tb_HopDong">
+              <MappingFragment StoreEntitySet="tb_HopDong">
+                <ScalarProperty Name="MaHD" ColumnName="MaHD" />
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="LoaiHD" ColumnName="LoaiHD" />
+                <ScalarProperty Name="TuNgay" ColumnName="TuNgay" />
+                <ScalarProperty Name="DenNgay" ColumnName="DenNgay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_NhanVien">
+            <EntityTypeMapping TypeName="QLNVModel.tb_NhanVien">
+              <MappingFragment StoreEntitySet="tb_NhanVien">
+                <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+                <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+                <ScalarProperty Name="CCCD" ColumnName="CCCD" />
+                <ScalarProperty Name="QueQuan" ColumnName="QueQuan" />
+                <ScalarProperty Name="NgaySinh" ColumnName="NgaySinh" />
+                <ScalarProperty Name="SDT" ColumnName="SDT" />
+                <ScalarProperty Name="MaPB" ColumnName="MaPB" />
+                <ScalarProperty Name="Trinhdo" ColumnName="Trinhdo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_PhongBan">
+            <EntityTypeMapping TypeName="QLNVModel.tb_PhongBan">
+              <MappingFragment StoreEntitySet="tb_PhongBan">
+                <ScalarProperty Name="MaPB" ColumnName="MaPB" />
+                <ScalarProperty Name="TenPB" ColumnName="TenPB" />
+                <ScalarProperty Name="SDTPB" ColumnName="SDTPB" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="tb_CV_NV" TypeName="QLNVModel.tb_CV_NV" StoreEntitySet="tb_CV_NV">
+            <EndProperty Name="tb_ChucVu">
+              <ScalarProperty Name="MaCV" ColumnName="MaCV" />
+            </EndProperty>
+            <EndProperty Name="tb_NhanVien">
+              <ScalarProperty Name="MaNV" ColumnName="MaNV" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

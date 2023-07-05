@@ -1,0 +1,35 @@
+﻿@model Bai1.Models.tb_PhongBan
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>tb_PhongBan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TenPB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenPB)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SDTPB)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SDTPB)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MaPB }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
